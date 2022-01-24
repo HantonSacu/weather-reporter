@@ -1,0 +1,76 @@
+name: "Run tests"
+
+on:
+  push:
+    branches-ignore:
+      - "WIP/*"
+
+jobs:
+  test:
+    name: Run tests
+    runs-on: ubuntu-latest
+
+    env:
+      JWT_SECRET: 78a87062f614bc155c832972626c54e1
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-java@v2
+        with:
+          distribution: "adopt"
+          java-version: "8.0.292"
+
+      - name: Install clojure tools
+        uses: DeLaGuardo/setup-clojure@3.4
+        with:
+          # Install just one or all simultaneously
+          cli: 1.10.1.693 # Clojure CLI based on tools.deps
+          lein: 2.9.1 # or use 'latest' to always provision latest version of leiningen
+
+      - name: Maven cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('deps.edn') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Gitlibs cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.gitlibs
+          key: ${{ runner.os }}-gitlibs-${{ hashFiles('deps.edn') }}
+          restore-keys: |
+            ${{ runner.os }}-gitlibs-
+
+      - name: npm cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('deps.edn') }}-${{ hashFiles('package.json') }}-${{ hashFiles('**/deps.cljs') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      - name: shadow-cljs compiler cache
+        uses: actions/cache@v2
+        with:
+          path: .shadow-cljs
+          key: ${{ runner.os }}-shadow-cljs-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-shadow-cljs-
+
+      - name: Install NPM Packages
+        shell: bash
+        run: npm install
+
+      - name: Check code format
+        run: make codeformat-check
+
+      - name: Lint code
+        run: make lint
+
+      - name: Run tests
+        run: make test

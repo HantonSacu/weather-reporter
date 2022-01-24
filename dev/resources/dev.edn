@@ -1,0 +1,5 @@
+{:duct.logger/timbre
+ {:level     :info
+  :appenders {:println #ig/ref :duct.logger.timbre/println}}
+
+ :duct.logger.timbre/println {}}

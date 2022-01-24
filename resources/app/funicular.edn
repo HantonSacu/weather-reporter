@@ -1,0 +1,8 @@
+{:api
+ [:api
+  {:commands {:ping {:input-schema :any
+                     :output-schema :app/pong
+                     :handler #ig/ref :app.api.handlers/pong}}}]
+ :pipes {}
+ :context {:penkala #ig/ref :app/penkala}
+ :logger #ig/ref :duct.logger/timbre}

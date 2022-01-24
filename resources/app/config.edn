@@ -1,0 +1,55 @@
+{:duct.profile/base
+ {:duct.core/project-ns app
+  :duct.handler/root
+  {:router #ig/ref :duct.router/reitit}
+
+  :duct.router/reitit
+  {:routes [["/" #ig/ref :app.handlers/index]
+            ["/api" #ig/ref :app.handlers/funicular]]
+   :reitit.ring/opts {:data #ig/ref :app.reitit/opts}
+   :reitit.ring/default-handlers {}}
+
+  :app.reitit/opts {}
+
+  :app.handlers/funicular {:funicular #ig/ref :app/funicular}
+  :app.handlers/index {}
+
+  :app/penkala {:db #ig/ref :duct.database/sql
+                :error-formatters {}}
+
+  :app.api.handlers/pong {}
+
+  :app/funicular #duct/include "app/funicular.edn"
+
+  :duct.middleware.web/defaults {:security {:anti-forgery false}}
+
+  :duct.migrator.ragtime/resources
+  {:path "app/migrations"}
+
+  :duct.migrator/ragtime
+  {:database #ig/ref :duct.database/sql
+   :logger #ig/ref :duct/logger
+   :strategy :raise-error
+   :migrations #ig/ref :duct.migrator.ragtime/resources
+   :migrations-table "ragtime_migrations"}}
+
+ :duct.module/shadow-cljs
+ {:builds
+  {:app
+   {:asset-path "/js"
+    :dev {:compiler-options {:external-config {:guardrails {}}
+                             :closure-defines {'goog.DEBUG true}}}
+    :devtools {}
+    :modules {:main {:init-fn app.frontend.core/main}}
+    :output-dir "resources/app/public/js"
+    :target :browser}}
+  :deps true}
+
+
+ :duct.module/logging {}
+ :duct.module/sql {}
+ :duct.module.web/site {}
+
+ :duct.profile/dev #duct/include "dev"
+ :duct.profile/local #duct/include "local"
+ :duct.profile/prod {}}

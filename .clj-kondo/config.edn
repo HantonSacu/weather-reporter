@@ -1,0 +1,23 @@
+{:lint-as {nubank.workspaces.core/defcard              cljs.core/def
+           nubank.workspaces.core/deftest              cljs.core/def
+           keechma.next.helix.lib/defnc                cljs.core/defn
+           keechma.next.helix.template/defnt           cljs.core/defn
+           keechma.next.helix.classified/defclassified cljs.core/def
+           keechma.next.toolbox.pipeline/pipeline!     cljs.core/fn
+
+           keechma.pipelines.core/rescue!              cljs.core/fn
+           promesa.core/let                            cljs.core/let
+           com.verybigthings.commons.try/try-as->      clojure.core/as->
+           app.penkala/with-transaction                clojure.core/let
+           applied-science.js-interop/fn               cljs.core/fn
+           applied-science.js-interop/let              cljs.core/let
+           applied-science.js-interop/defn             cljs.core/defn}
+ :linters {:unused-binding {:exclude-destructured-keys-in-fn-args true}
+           :unresolved-var    {:exclude [helix.dom
+                                         com.rpl.specter
+                                         digest]}
+           :unresolved-symbol {:exclude [(keechma.next.helix.lib/defnc [props])
+                                         (keechma.pipelines.core/pipeline!)
+                                         (keechma.pipelines.core/rescue!)
+                                         (keechma.next.helix.template/defnt [configurable slot optional-slot])]}}
+ :config-paths ["clj-kondo/nubank/state-flow"]}

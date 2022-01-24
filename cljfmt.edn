@@ -1,0 +1,19 @@
+{:paths                                 ["src" "dev" "test"]
+ :remove-surrounding-whitespace?        true
+ :remove-trailing-whitespace?           true
+ :remove-consecutive-blank-lines?       true
+ :insert-missing-whitespace?            true
+ :split-keypairs-over-multiple-lines?   false
+ :align-associative?                    false
+ :remove-multiple-non-indenting-spaces? true
+ :indents                               {do                 [[:block 0]]
+                                         defnc              [[:inner 0]]
+                                         #"d/*"             [[:inner 0]]
+                                         pipelines/register [[:inner 0]]
+                                         pipeline!          [[:inner 0]]
+                                         rescue!            [[:inner 0]]
+                                         form/wrap          [[:inner 0]]
+                                         flow               [[:inner 0]]
+                                         try-as->           [[:inner 0]]
+                                         $                  [[:inner 0]]
+                                         <>                 [[:inner 0]]}}
